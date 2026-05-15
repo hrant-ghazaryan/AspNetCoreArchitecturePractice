@@ -1,50 +1,63 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using ProductStoreMVC.Models;
+﻿using ProductStoreMVC.Models;
 using ProductStoreMVC.Repositories;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxTokenParser;
 
 namespace ProductStoreMVC.Services;
 
 public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository;
+
     public CategoryService(ICategoryRepository categoryRepository)
         => _categoryRepository = categoryRepository;
 
+    // CREATE
     public async Task<Result> AddAsync(Category category)
     {
-        if (String.IsNullOrEmpty(category.Name))
+        if (string.IsNullOrWhiteSpace(category.Name))
             return Result.Fail("Name is required");
 
-        _categoryRepository.Add(category);
-        _categoryRepository.Save();
+        await _categoryRepository.AddAsync(category);
+        await _categoryRepository.SaveAsync();
 
         return Result.Success();
     }
 
-    public async Task DeleteAsync(int id)
+    // DELETE
+    public async Task<Result> DeleteAsync(int id)
     {
-        _categoryRepository.Delete(id);
-        _categoryRepository.Save();
+        var existing = await _categoryRepository.GetByIdAsync(id);
+
+        if (existing is null)
+            return Result.Fail("Category not found");
+
+        await _categoryRepository.DeleteAsync(id);
+        await _categoryRepository.SaveAsync();
+
+        return Result.Success();
     }
 
+    // READ ALL
     public async Task<IEnumerable<Category>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
+        => await _categoryRepository.GetAllAsync();
 
+    // READ BY ID
     public async Task<Category?> GetByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+        => await _categoryRepository.GetByIdAsync(id);
 
-    public async Task SaveAsync()
+    // UPDATE
+    public async Task<Result> UpdateAsync(int id, Category category)
     {
-        throw new NotImplementedException();
-    }
+        var existing = await _categoryRepository.GetByIdAsync(id);
 
-    public async Task UpdateAsync(int id, Category category)
-    {
-        throw new NotImplementedException();
+        if (existing is null)
+            return Result.Fail("Category not found");
+
+        if (string.IsNullOrWhiteSpace(category.Name))
+            return Result.Fail("Name is required");
+
+        await _categoryRepository.UpdateAsync(id, category);
+        await _categoryRepository.SaveAsync();
+
+        return Result.Success();
     }
 }

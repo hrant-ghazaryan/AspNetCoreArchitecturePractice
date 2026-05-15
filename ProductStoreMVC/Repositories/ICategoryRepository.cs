@@ -4,12 +4,12 @@ namespace ProductStoreMVC.Repositories;
 
 public interface ICategoryRepository
 {
-    public Category? GetById(int id);
-    public IEnumerable<Category> GetAll();
+    Task<Category?> GetByIdAsync(int id);
+    Task<List<Category>> GetAllAsync();
 
-    public void Add(Category category);
-    public void Delete(int id);
-    public void Update(int id, Category category);
+    Task AddAsync(Category category);
+    Task DeleteAsync(int id);
+    Task UpdateAsync(int id, Category category);
 
-    public void Save();
+    Task SaveAsync();
 }

@@ -4,12 +4,15 @@ namespace ProductStoreMVC.Repositories;
 
 public interface IProductRepository
 {
-    public Product? GetById(int id);
-    public IEnumerable<Product> GetAll();
+    Task<Product?> GetByIdAsync(int id);
 
-    public void Add(Product product);
-    public void Delete(int id);
-    public void Update(int id, Product product);
+    Task<List<Product>> GetAllAsync();
 
-    public void Save();
+    Task AddAsync(Product product);
+
+    Task DeleteAsync(int id);
+
+    Task UpdateAsync(int id, Product product);
+
+    Task SaveAsync();
 }

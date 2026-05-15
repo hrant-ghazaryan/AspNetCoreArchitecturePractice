@@ -4,12 +4,13 @@ namespace ProductStoreMVC.Services;
 
 public interface ICategoryService
 {
-    public Task<Category?> GetByIdAsync(int id);
-    public Task<IEnumerable<Category>> GetAllAsync();
+    Task<Category?> GetByIdAsync(int id);
 
-    public Task AddAsync(Category category);
-    public Task DeleteAsync(int id);
-    public Task UpdateAsync(int id, Category category);
+    Task<IEnumerable<Category>> GetAllAsync();
 
-    public Task SaveAsync();
+    Task<Result> AddAsync(Category category);
+
+    Task<Result> DeleteAsync(int id);
+
+    Task<Result> UpdateAsync(int id, Category category);
 }
