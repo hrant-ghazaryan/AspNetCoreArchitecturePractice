@@ -21,4 +21,13 @@ public class AppDbContext : DbContext
     // Categories աղյուսակի ներկայացումն է ծրագրում։
     // EF Core-ը Category entity-ն կապում է Categories table-ի հետ։
     public DbSet<Category> Categories { get; set; }
+    public DbSet<User> Users { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Product>()
+            .Property(p => p.Price)
+            .HasPrecision(18, 2);
+    }
 }

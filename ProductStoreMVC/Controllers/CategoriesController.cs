@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProductStoreMVC.Data;
 using ProductStoreMVC.Models;
 
@@ -16,8 +17,11 @@ public class CategoriesController : Controller
         return View(Categories);
     }
 
+    [Authorize]
     public IActionResult Create()
         => View();
+
+    [Authorize]
     [HttpPost]
     public IActionResult Create(Category category)
     {
@@ -31,6 +35,7 @@ public class CategoriesController : Controller
         return RedirectToAction("Index");
     }
 
+    [Authorize]
     public IActionResult Edit(int id)
     {
         var editCategory = _context.Categories.Find(id);
@@ -40,6 +45,8 @@ public class CategoriesController : Controller
 
         return View(editCategory);
     }
+
+    [Authorize]
     [HttpPost]
     public IActionResult EditConfirmed(int id, Category category)
     {
@@ -54,7 +61,8 @@ public class CategoriesController : Controller
         _context.SaveChanges();
         return RedirectToAction("Index");
     }
-    
+
+    [Authorize]
     public IActionResult Delete(int id)
     {
         var delCategory = _context.Categories.Find(id);
@@ -64,6 +72,7 @@ public class CategoriesController : Controller
         return View(delCategory);
     }
     [HttpPost]
+    [Authorize]
     public IActionResult DeleteConfirmed(int id)
     {
         var delCategory = _context.Categories.Find(id);
