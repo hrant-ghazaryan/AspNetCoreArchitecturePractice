@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProductStoreMVC.Data;
@@ -21,6 +22,7 @@ public class ProductsController : Controller
         return View(Products);
     }
 
+    [Authorize(Roles = "Admin,User")]
     public IActionResult Create()
     {
         var vm = new ProductCreateViewModel
@@ -36,7 +38,9 @@ public class ProductsController : Controller
 
         return View(vm);
     }
+
     [HttpPost]
+    [Authorize(Roles = "Admin,User")]
     public IActionResult Create(ProductCreateViewModel vm)
     {
         if (!ModelState.IsValid)
@@ -65,6 +69,7 @@ public class ProductsController : Controller
         return RedirectToAction("Index");
     }
 
+    [Authorize(Roles = "Admin,User")]
     public IActionResult Edit(int id)
     {
         var editProduct = _context.Products.
@@ -95,9 +100,11 @@ public class ProductsController : Controller
         })
         .ToList();
 
-        return View(editProduct);
+        return View(vm);
     }
+
     [HttpPost]
+    [Authorize(Roles = "Admin,User")]
     public IActionResult EditConfirmed(int id, Product product)
     {
         if (!ModelState.IsValid)
@@ -115,6 +122,8 @@ public class ProductsController : Controller
         return RedirectToAction("Index");
     }
 
+
+    [Authorize(Roles = "Admin,User")]
     public IActionResult Delete(int id)
     {
         var delProduct = _context.Products.

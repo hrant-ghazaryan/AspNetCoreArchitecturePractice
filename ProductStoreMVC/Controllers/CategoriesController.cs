@@ -17,11 +17,11 @@ public class CategoriesController : Controller
         return View(Categories);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public IActionResult Create()
         => View();
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public IActionResult Create(Category category)
     {
@@ -35,7 +35,7 @@ public class CategoriesController : Controller
         return RedirectToAction("Index");
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public IActionResult Edit(int id)
     {
         var editCategory = _context.Categories.Find(id);
@@ -46,7 +46,7 @@ public class CategoriesController : Controller
         return View(editCategory);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public IActionResult EditConfirmed(int id, Category category)
     {
@@ -62,7 +62,7 @@ public class CategoriesController : Controller
         return RedirectToAction("Index");
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin")     ]
     public IActionResult Delete(int id)
     {
         var delCategory = _context.Categories.Find(id);
@@ -72,7 +72,7 @@ public class CategoriesController : Controller
         return View(delCategory);
     }
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public IActionResult DeleteConfirmed(int id)
     {
         var delCategory = _context.Categories.Find(id);

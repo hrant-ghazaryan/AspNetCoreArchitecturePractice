@@ -2,17 +2,31 @@
 
 <h2>Categories</h2>
 
-<a asp-action="Create" class="btn btn-primary mb-3">
-    Create
-</a>
+<!-- 🔴 Create button միայն Admin-ին -->
+@if (User.IsInRole("Admin"))
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">
+        Create
+    </a>
+}
 
 <table class="table table-bordered">
 
     <thead>
         <tr>
-            <th>Id</th>
+            <!-- 🔴 Id միայն Admin -->
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Id</th>
+            }
+
             <th>Name</th>
-            <th>Actions</th>
+
+            <!-- 🔴 Actions միայն Admin -->
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Actions</th>
+            }
         </tr>
     </thead>
 
@@ -21,20 +35,32 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Id</td>
+
+                <!-- 🔴 Id միայն Admin -->
+                @if (User.IsInRole("Admin"))
+                    { <td>@item.Id</td> }
+
+                <!-- 🟢 User + Guest + Admin բոլորը տեսնում են Name -->
                 <td>@item.Name</td>
-                <td>
-                    <a asp-action="Delete"
+
+                <!-- 🔴 Actions միայն Admin -->
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        <a asp-action="Edit"
                            asp-route-id="@item.Id"
-                           class="btn btn-danger">
-                        Delete
-                    </a>
-                    <a asp-action="Edit"
+                           class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+
+                        <a asp-action="Delete"
                            asp-route-id="@item.Id"
-                           class="btn btn-warning">
-                        Edit
-                    </a>
-                </td>
+                           class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+                    </td>
+                }
+
             </tr>
         }
 
